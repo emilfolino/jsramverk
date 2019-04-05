@@ -1,0 +1,12 @@
+{
+  "name": "jsramverk",
+  "version": "1.0.0",
+  "description": "Example code and configuration for the course [DV1612 JavaScript-based web frameworks](https://jsramverk.me) given at Blekinge Institute of Technology.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
