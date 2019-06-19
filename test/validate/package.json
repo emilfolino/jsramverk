@@ -1,0 +1,26 @@
+{
+  "name": "black-jack",
+  "version": "1.0.0",
+  "description": "A game of Black Jack to try out testing.",
+  "main": null,
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "nyc --reporter=html --reporter=text mocha 'test/**/*.js'",
+    "posttest": "npm run eslint",
+    "eslint": "eslint .",
+    "clean": "rm -rf build npm-debug.log",
+    "preclean-all": "npm run clean",
+    "clean-all": "rm -rf node_modules"
+  },
+  "author": "Mikael Roos",
+  "license": "MIT",
+  "devDependencies": {
+    "eslint": "^4.10.0",
+    "eslint-plugin-react": "^7.4.0",
+    "javascript-style-guide": "^0.9.10",
+    "mocha": "^4.0.1",
+    "nyc": "^11.2.1"
+  }
+}
