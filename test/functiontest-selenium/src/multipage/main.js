@@ -138,7 +138,7 @@
         removeAllNodes(nav);
 
         for (var route in routes) {
-            if (routes.hasOwnProperty(route)) {
+            if (Object.prototype.hasOwnProperty.call(routes, route)) {
                 var link = document.createElement("a");
 
                 link.href = "#!" + route;
