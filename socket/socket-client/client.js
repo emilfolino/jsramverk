@@ -6,8 +6,6 @@ const allMessages = document.getElementById("all-messages");
 const socket = io('http://localhost:3000');
 
 socket.on('connect', function() {
-    console.info("Connected");
-
     socket.on('chat message', function (message) {
         let addedMessage = document.createElement("p");
 
