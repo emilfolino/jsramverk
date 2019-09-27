@@ -7,6 +7,8 @@ app.use(cors());
 const server = require('http').createServer(app);
 const io = require('socket.io')(server);
 
+io.set('origins', 'https://socket-client.jsramverk.me');
+
 io.on('connection', function (socket) {
     console.info("User connected");
 
