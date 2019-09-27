@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "webpack -d"
+    "start": "webpack -d",
+    "build": "webpack -p",
+    "production": "npm run build && rsync -av index.html dist style.css efo@jsramverk.me:/var/www/socket-client.jsramverk.me/html/"
   },
   "keywords": [],
   "author": "",
