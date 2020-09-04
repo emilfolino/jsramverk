@@ -52,7 +52,7 @@ export class AppComponent {
   }
 
   divide() {
-      this.operator = (a, b) => a / b;
+      this.operator = (a, b) => b / a;
       this.setPrevious();
   }
 
@@ -62,7 +62,7 @@ export class AppComponent {
   }
 
   subtract() {
-      this.operator = (a, b) => a - b;
+      this.operator = (a, b) => b - a;
       this.setPrevious();
   }
 
