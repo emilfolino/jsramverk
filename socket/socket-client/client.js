@@ -3,7 +3,7 @@ import io from 'socket.io-client';
 const newMessage = document.getElementById("new-message");
 const allMessages = document.getElementById("all-messages");
 
-const socket = io('https://socket-server.jsramverk.me');
+const socket = io('https://socket-server.jsramverk.se');
 
 socket.on('connect', function() {
     socket.on('chat message', function (message) {
