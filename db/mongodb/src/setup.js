@@ -36,7 +36,10 @@ resetCollection(dsn, "crowd", docs)
  * @return {Promise<void>} Void
  */
 async function resetCollection(dsn, colName, doc) {
-    const client  = await mongo.connect(dsn);
+    const client = await mongo.connect(dsn, {
+        useNewUrlParser: true,
+        useUnifiedTopology: true
+    });
     const db = await client.db();
     const col = await db.collection(colName);
 
