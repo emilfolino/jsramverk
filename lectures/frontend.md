@@ -26,3 +26,19 @@ React: Facebook, Facebook, Facebook [Why did we build React?](https://reactjs.or
 
 
 Vue: "I figured, what if I could just extract the part that I really liked about Angular and build something really lightweight." Fristående projekt.
+
+
+
+## Editors
+
+(Editors)[https://jsramverk.se/frontend#editor-komponenter]
+
+Finns många fler.
+
+
+
+## Vägen genom kursmomentet/kursen
+
+Välj - gör kravspecen
+
+Analysera och utvärdera, sedan göra.
