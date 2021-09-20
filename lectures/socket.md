@@ -1,5 +1,11 @@
 # Socket
 
+## Status
+
+Rättar på så fort jag bara kan.
+
+kmom06/GraphQL är på g, hoppas det kommer ut onsdag.
+
 ## Vad och varför?
 
 > WebSocket is a computer communications protocol, providing full-duplex communication channels over a single TCP connection.
