@@ -8,6 +8,7 @@ const {
 
 const CourseType = require("./course.js");
 const TeacherType = require("./teacher.js");
+const StudentType = require("./student.js");
 
 const courses = require("../models/courses.js");
 
@@ -28,7 +29,7 @@ const RootQueryType = new GraphQLObjectType({
             }
         },
         courses: {
-            type: new GraphQLList(CourseType),
+            type: GraphQLList(CourseType),
             description: 'List of all courses',
             resolve: async function() {
                 return await courses.getAll();
@@ -41,35 +42,42 @@ const RootQueryType = new GraphQLObjectType({
                 acronym: { type: GraphQLString }
             },
             resolve: async function (parent, args) {
-                let teachers = await getTeachers();
+                let teachers = await getPeople("teachers");
 
                 return teachers.find(teacher => teacher.acronym === args.acronym)
             }
         },
         teachers: {
-            type: new GraphQLList(TeacherType),
+            type: GraphQLList(TeacherType),
             description: 'List of teachers',
             resolve: async function() {
-                return await getTeachers();
+                return await getPeople("teachers");
+            }
+        },
+        students: {
+            type: GraphQLList(StudentType),
+            description: 'List of students',
+            resolve: async function() {
+                return await getPeople("students");
             }
         }
     })
 });
 
-async function getTeachers() {
+async function getPeople(entity) {
     let courseArray = await courses.getAll();
-    let teachers = [];
+    let people = [];
     let acronyms = [];
     courseArray.forEach(function(course) {
-        course.teachers.forEach(function(teacher) {
-            if (acronyms.indexOf(teacher.acronym) === -1) {
-                teachers.push(teacher);
-                acronyms.push(teacher.acronym);
+        course[entity].forEach(function(person) {
+            if (acronyms.indexOf(person.acronym) === -1) {
+                people.push(person);
+                acronyms.push(person.acronym);
             }
         });
     });
 
-    return teachers;
+    return people;
 }
 
 module.exports = RootQueryType;

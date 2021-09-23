@@ -2,6 +2,7 @@ const express = require("express");
 const morgan = require("morgan");
 const cors = require("cors");
 
+const visual = true;
 const { graphqlHTTP } = require('express-graphql');
 const {
   GraphQLSchema
@@ -11,8 +12,6 @@ const RootQueryType = require("./graphql/root.js");
 
 const courses = require("./models/courses.js");
 const database = require("./db/database.js");
-
-const visual = true;
 
 const app = express();
 

@@ -7,6 +7,9 @@ const {
     GraphQLNonNull
 } = require('graphql');
 
+const TeacherType = require("./teacher.js");
+const StudentType = require("./student.js");
+
 const CourseType = new GraphQLObjectType({
     name: 'Course',
     description: 'This represents a course',
@@ -14,12 +17,18 @@ const CourseType = new GraphQLObjectType({
         courseCode: { type: GraphQLNonNull(GraphQLString) },
         name: { type: GraphQLNonNull(GraphQLString) },
         credits: { type: GraphQLNonNull(GraphQLFloat) },
-        // author: {
-        //     type: AuthorType,
-        //     resolve: (book) => {
-        //         return authors.find(author => author.id === book.authorId)
-        //     }
-        // }
+        teachers: {
+            type: GraphQLList(TeacherType),
+            resolve: (course) => {
+                return course.teachers
+            }
+        },
+        students: {
+            type: GraphQLList(StudentType),
+            resolve: (course) => {
+                return course.students
+            }
+        }
     })
 })
 
