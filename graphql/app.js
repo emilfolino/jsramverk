@@ -2,7 +2,7 @@ const express = require("express");
 const morgan = require("morgan");
 const cors = require("cors");
 
-var { graphqlHTTP } = require('express-graphql');
+const { graphqlHTTP } = require('express-graphql');
 const {
   GraphQLSchema
 } = require("graphql");
@@ -11,6 +11,8 @@ const RootQueryType = require("./graphql/root.js");
 
 const courses = require("./models/courses.js");
 const database = require("./db/database.js");
+
+const visual = true;
 
 const app = express();
 
@@ -30,12 +32,12 @@ if (process.env.NODE_ENV !== 'test') {
 }
 
 const schema = new GraphQLSchema({
-  query: RootQueryType
+    query: RootQueryType
 });
 
 app.use('/graphql', graphqlHTTP({
-  schema: schema,
-  graphiql: true
+    schema: schema,
+    graphiql: visual,
 }));
 
 app.get("/", (req, res) => courses.getAll(res));
