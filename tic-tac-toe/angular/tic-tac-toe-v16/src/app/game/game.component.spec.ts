@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, fakeAsync, flushMicrotasks, tick } from '@angular/core/testing';
 
 import { GameComponent } from './game.component';
 import { BoardComponent } from '../board/board.component';
@@ -26,4 +26,16 @@ describe('GameComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('when clicking square it should change to X', fakeAsync(() => {
+    spyOn(component, 'handleClick');
+
+    let square = fixture.debugElement.nativeElement.querySelector('.square');
+
+    square.click();
+
+    tick(1);
+
+    expect(component.handleClick).toHaveBeenCalled();
+  }));
 });
