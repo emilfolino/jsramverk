@@ -1,22 +1,20 @@
-import { describe, it, expect, vi } from 'vitest'
+import { describe, it, expect } from 'vitest'
 
-import { mount } from '@vue/test-utils'
+import { mount, flushPromises } from '@vue/test-utils'
 import ProductList from '../ProductList.vue'
 
 describe('ProductList', () => {
+
   it('renders properly', () => {
     const wrapper = mount(ProductList)
     expect(wrapper.text()).toContain('List')
   })
 
-  it('it calls fetchProducts on mount', () => {
-    const spy = vi.spyOn(ProductList, 'fetchProducts')
-    expect(spy.getMockName()).toEqual('fetchProducts')
+  it('list contains iPhone 15', async () => {
+    const wrapper = mount(ProductList)
 
-    // expect(messages.getLatest()).toEqual(
-    //   messages.items[messages.items.length - 1],
-    // )
+    await flushPromises();
 
-    // expect(spy).toHaveBeenCalledTimes(1)
+    expect(wrapper.text()).toContain('iPhone 15')
   })
 })
