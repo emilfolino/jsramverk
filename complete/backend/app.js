@@ -1,3 +1,5 @@
+require('dotenv').config()
+
 const express = require('express');
 const cors = require('cors');
 const morgan = require('morgan');
@@ -6,6 +8,15 @@ const bodyParser = require('body-parser');
 const ordersModel = require('./models/orders');
 const productsModel = require('./models/products');
 const orderItemsModel = require('./models/order_items');
+const authModel = require('./models/auth');
+
+const visual = true;
+const { graphqlHTTP } = require('express-graphql');
+const {
+    GraphQLSchema
+} = require("graphql");
+
+const RootQueryType = require("./graphql/root.js");
 
 const app = express();
 const httpServer = require("http").createServer(app);
@@ -33,23 +44,37 @@ const io = require("socket.io")(httpServer, {
 
 const port = process.env.PORT || 1337;
 
+const schema = new GraphQLSchema({
+    query: RootQueryType
+});
+
+app.use('/graphql', graphqlHTTP({
+    schema: schema,
+    graphiql: visual,
+}));
+
 app.get('/', (req, res) => {
     return res.json({
         data: 'Hello World!'
     });
 });
 
-app.get('/orders', async (req, res) => {
-    return res.json({
-        data: await ordersModel.getOrders()
-    });
-});
+app.get('/token', (req, res) => authModel.createToken(req, res));
+
+app.get('/orders',
+    (req, res, next) => authModel.checkToken(req, res, next),
+    async (req, res) => {
+        return res.json({
+            data: await ordersModel.getOrders()
+        });
+    }
+);
 
 httpServer.listen(port, () => {
     console.log(`Example app listening on port ${port}`);
 });
 
-output();
+// output();
 
 async function output() {
     const orders = await ordersModel.getOrders();
