@@ -3,10 +3,12 @@ const morgan = require("morgan");
 const cors = require("cors");
 
 const visual = true;
-const { graphqlHTTP } = require('express-graphql');
+
 const {
   GraphQLSchema
 } = require("graphql");
+const graphqlHttp = require('graphql-http/lib/use/express');
+
 
 const RootQueryType = require("./graphql/root.js");
 
@@ -34,10 +36,7 @@ const schema = new GraphQLSchema({
     query: RootQueryType
 });
 
-app.use('/graphql', graphqlHTTP({
-    schema: schema,
-    graphiql: visual,
-}));
+app.use('/graphql', graphqlHttp.createHandler({ schema }));
 
 app.get("/", (req, res) => courses.getAll(res));
 
