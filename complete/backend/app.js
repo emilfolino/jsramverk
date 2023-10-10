@@ -70,18 +70,44 @@ app.get('/orders',
     }
 );
 
-httpServer.listen(port, () => {
-    console.log(`Example app listening on port ${port}`);
+let orders = [];
+
+io.sockets.on('connection', async function(socket) {
+    console.log(socket.id); // Nått lång och slumpat
+
+    orders.map((order) => {
+        order.locked = false;
+
+        return order;
+    });
+
+    socket.emit("orders", orders);
+
+    socket.on("lockSocket", function(data) {
+        orders.forEach((order) => {
+            if (order.rowid === data) {
+                order.locked = true;
+            }
+        });
+
+        io.emit("orders", orders);
+    });
+
+    socket.on("changeStatus", async function(data) {
+        orders.forEach((order) => {
+            if (order.rowid === data) {
+                order.locked = false;
+                order.status = 200;
+            }
+        });
+
+        await ordersModel.changeStatus(data);
+
+        io.emit("orders", orders);
+    });
 });
 
-// output();
-
-// async function output() {
-//     const orders = await ordersModel.getOrders();
-//     // const product = await productsModel.getProduct(1);
-//     // const orderItems = await orderItemsModel.getOrderItems(1);
-//
-//     console.log(orders);
-//     console.log(product);
-//     console.log(orderItems);
-// }
+httpServer.listen(port, async () => {
+    orders = await ordersModel.getOrders();
+    console.log(`Example app listening on port ${port}`);
+});

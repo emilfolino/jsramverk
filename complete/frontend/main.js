@@ -1,4 +1,6 @@
 (async function IIFE() {
+    let lockedOrder = { orderId: 0 };
+
     const main = document.getElementById("root");
 
     let header = document.createElement("h1");
@@ -6,6 +8,16 @@
     header.textContent = "Ordrar";
 
     main.appendChild(header);
+
+    let orderList = document.createElement("div");
+
+    main.appendChild(orderList);
+
+    const socket = io("http://localhost:1337");
+
+    socket.on("orders", (data) => {
+        outputOrders(data, orderList, socket, lockedOrder);
+    });
 
     // const response = await fetch('http://localhost:1337/orders', {
     //     headers: {
@@ -23,40 +35,89 @@
     // });
 
 
-    const ordersQuery = `{
-        orders {
-            customerName
-            orderItems {
-            productId
-            amount
-            product {
-                productName
-            }
-            }
+    // const ordersQuery = `{
+    //     orders {
+    //         customerName
+    //         orderItems {
+    //         productId
+    //         amount
+    //         product {
+    //             productName
+    //         }
+    //         }
+    //     }
+    // }`;
+
+    // const response = await fetch('http://localhost:1337/graphql', {
+    //     method: 'POST',
+    //     headers: {
+    //         'Content-Type': 'application/json',
+    //         'Accept': 'application/json',
+    //     },
+    //     body: JSON.stringify({ query: ordersQuery })
+    // });
+    // const result = await response.json();
+
+    // result.data.orders.forEach((order) => {
+    //     let element = document.createElement("h2");
+
+    //     element.textContent = `${order.customerName}`;
+
+    //     let oiElement = document.createElement("p");
+    //     order.orderItems.forEach((oi) => {
+    //         oiElement.textContent += `${oi.amount} st. ${oi.product.productName} `;
+    //     });
+
+    //     main.appendChild(element);
+    //     main.appendChild(oiElement);
+    // });
+})();
+
+function outputOrders(orders, parent, socket, lockedOrder) {
+    parent.innerHTML = "";
+
+    orders.forEach((order) => {
+        let element = document.createElement("div");
+
+        element.classList.add("order");
+
+        element.textContent = order.customerName;
+
+        if (order.locked) {
+            element.classList.add("locked");
         }
-    }`;
 
-    const response = await fetch('http://localhost:1337/graphql', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
-        },
-        body: JSON.stringify({ query: ordersQuery })
-    });
-    const result = await response.json();
+        if (order.status === 200) {
+            element.classList.add("status");
+        }
 
-    result.data.orders.forEach((order) => {
-        let element = document.createElement("h2");
+        if (order.locked && lockedOrder.orderId === order.rowid) {
+            let buttonElement = document.createElement("button");
 
-        element.textContent = `${order.customerName}`;
+            buttonElement.textContent = "Ändra status";
 
-        let oiElement = document.createElement("p");
-        order.orderItems.forEach((oi) => {
-            oiElement.textContent += `${oi.amount} st. ${oi.product.productName} `;
+            buttonElement.addEventListener("click", function(event) {
+                event.preventDefault();
+
+                socket.emit("changeStatus", order.rowid);
+
+                lockedOrder.orderId = 0;
+            });
+
+            element.appendChild(buttonElement);
+        }
+
+        element.addEventListener("click", function(event) {
+            event.preventDefault();
+
+            if (!order.locked && order.status === 100 && lockedOrder.orderId === 0) {
+                socket.emit("lockSocket", order.rowid);
+                lockedOrder.orderId = order.rowid;
+            }
         });
 
-        main.appendChild(element);
-        main.appendChild(oiElement);
+        parent.appendChild(element);
     });
-})();
+}
+
+

@@ -13,6 +13,20 @@ const orders = {
         } finally {
             await db.close();
         }
+    },
+
+    changeStatus: async function changeStatus(orderId) {
+        const db = await database.openDb();
+
+        try {
+            const query = `UPDATE orders SET status = 200 WHERE rowid = ?`;
+
+            return await db.run(query, orderId);
+        } catch (error) {
+            return { errors: error };
+        } finally {
+            await db.close();
+        }
     }
 };
 

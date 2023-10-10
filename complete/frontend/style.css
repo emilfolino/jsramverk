@@ -38,3 +38,16 @@ p {
     margin-bottom: 1.4rem;
     font-size: 1rem;
 }
+
+.order {
+    padding: 1rem 2rem;
+    border: 1px solid #ccc;
+}
+
+.locked {
+    background-color: lightcoral;
+}
+
+.status {
+    background-color: lightgreen;
+}
