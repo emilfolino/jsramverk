@@ -13,7 +13,8 @@ CREATE TABLE IF NOT EXISTS orders (
     customerAddress VARCHAR(255),
     customerZip VARCHAR(12),
     customerCity VARCHAR(255),
-    customerCountry VARCHAR(255)
+    customerCountry VARCHAR(255),
+    status INTEGER DEFAULT 100
 );
 
 CREATE TABLE IF NOT EXISTS order_items (

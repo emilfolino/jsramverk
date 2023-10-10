@@ -76,12 +76,12 @@ httpServer.listen(port, () => {
 
 // output();
 
-async function output() {
-    const orders = await ordersModel.getOrders();
-    const product = await productsModel.getProduct(1);
-    const orderItems = await orderItemsModel.getOrderItems(1);
-
-    console.log(orders);
-    console.log(product);
-    console.log(orderItems);
-}
+// async function output() {
+//     const orders = await ordersModel.getOrders();
+//     // const product = await productsModel.getProduct(1);
+//     // const orderItems = await orderItemsModel.getOrderItems(1);
+//
+//     console.log(orders);
+//     console.log(product);
+//     console.log(orderItems);
+// }
